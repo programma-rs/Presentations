@@ -1,0 +1,4723 @@
+:root {
+  --ink: #174d60;
+  --text: #304a55;
+  --muted: #708288;
+  --line: #dfe8e9;
+  --soft: #f6faf9;
+  --mint: #67dec5;
+  --teal: #35bea7;
+  --lime: #aaf12c;
+  --white: #fff;
+}
+* {
+  box-sizing: border-box;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  font-family: Verdana, Geneva, sans-serif;
+}
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Verdana, Geneva, sans-serif;
+  background: #e9eef0;
+  color: var(--ink);
+}
+body {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.deck {
+  width: min(100vw, 177.7778vh);
+  height: min(100vh, 56.25vw);
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 60px rgba(20, 58, 70, 0.12);
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(34px);
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.42s;
+}
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s;
+}
+.logo {
+  position: absolute;
+  top: 4.2%;
+  right: 4.7%;
+  width: clamp(155px, 12vw, 220px);
+  height: auto;
+  z-index: 20;
+}
+.pad {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 8%;
+  bottom: 7%;
+}
+/* .kicker {
+        font-size: clamp(17px, 1.25vw, 22px);
+        color: var(--teal);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      } */
+
+.kicker {
+  font-size: clamp(17px, 1.25vw, 22px);
+  color: var(--teal);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+
+  background: linear-gradient(90deg, #c0c1c1, #838484, #c0c1c1);
+
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: kickerGradient 12s ease-in-out infinite;
+}
+
+@keyframes kickerGradient {
+  0% {
+    background-position: 0% center;
+  }
+
+  50% {
+    background-position: 100% center;
+  }
+
+  100% {
+    background-position: 0% center;
+  }
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: clamp(58px, 6.5vw, 118px);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+}
+h2 {
+  font-size: clamp(38px, 3.7vw, 68px);
+  font-size: 50px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+h3 {
+  font-size: clamp(24px, 1.9vw, 34px);
+  line-height: 1.12;
+  font-weight: 700;
+}
+.body {
+  font-size: clamp(24px, 1.65vw, 30px);
+  line-height: 1.35;
+  color: var(--text);
+}
+.small {
+  font-size: clamp(20px, 1.25vw, 24px);
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.nav {
+  position: absolute;
+  left: 50%;
+  bottom: 2.5%;
+  transform: translateX(-50%);
+  width: clamp(150px, 18vw, 250px);
+  height: 6px;
+  border-radius: 999px;
+  background: #e4ecec;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.nav-progress {
+  width: 0;
+
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--lime) 0%,
+    var(--mint) 48%,
+    var(--teal) 100%
+  );
+
+  transform-origin: left center;
+  transition:
+    width 0.55s cubic-bezier(0.16, 0.84, 0.24, 1),
+    background-position 1.2s ease;
+  background-size: 180% 100%;
+  box-shadow: 0 0 12px rgba(53, 190, 167, 0.15);
+}
+.fullscreen {
+  position: absolute;
+  left: 3.2%;
+  bottom: 2%;
+  z-index: 30;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  padding: 9px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.counter {
+  position: absolute;
+  right: 3.2%;
+  bottom: 2.2%;
+  z-index: 30;
+  font-size: 14px;
+  color: #9aabad;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.slide.active .reveal {
+  animation: rise 0.7s cubic-bezier(0.16, 0.84, 0.24, 1) forwards;
+}
+.slide.active .d1 {
+  animation-delay: 0.12s;
+}
+.slide.active .d2 {
+  animation-delay: 0.24s;
+}
+.slide.active .d3 {
+  animation-delay: 0.36s;
+}
+.slide.active .d4 {
+  animation-delay: 0.48s;
+}
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 1. HERO */
+.s1 .pad {
+  display: flex;
+  align-items: center;
+}
+.hero-copy {
+  width: 58%;
+  position: relative;
+  z-index: 4;
+}
+.hero-tag {
+  font-size: clamp(20px, 1.5vw, 28px);
+  color: var(--teal);
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+.hero-sub {
+  margin-top: 28px;
+  max-width: 830px;
+  /* font-size: clamp(26px, 2vw, 36px); */
+  font-size: 40px;
+
+  line-height: 1.22;
+  color: var(--text);
+  font-weight: 650;
+}
+.hero-meta {
+  margin-top: 44px;
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+  font-size: clamp(22px, 1.45vw, 27px);
+  line-height: 1.3;
+}
+.hero-line {
+  width: 4px;
+  background: var(--lime);
+  border-radius: 3px;
+}
+.hero-meta strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+/* 2. QUOTE — redesigned */
+
+/* 2. QUOTE — redesigned */
+.s2 {
+  background: #fff;
+}
+
+.s2-layout {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 10.5%;
+  bottom: 7%;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 5.5%;
+  align-items: center;
+}
+
+.s2-copy {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+  max-width: 860px;
+}
+
+.s2-quote-mark {
+  color: var(--lime);
+  font-size: clamp(72px, 7vw, 118px);
+  line-height: 0.62;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.s2-quote {
+  margin: 0;
+  padding: 0;
+  color: var(--ink);
+  font-size: clamp(44px, 4.25vw, 70px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.s2-quote .quote-line {
+  display: block;
+}
+
+.s2-author {
+  margin-top: 28px;
+  font-size: clamp(24px, 1.6vw, 30px);
+  line-height: 1.2;
+  color: var(--muted);
+}
+
+.s2-accent {
+  width: 110px;
+  height: 5px;
+  border-radius: 99px;
+  margin-top: 34px;
+  background: linear-gradient(90deg, var(--lime), var(--teal));
+  transform-origin: left center;
+}
+
+.s2-photo-wrap {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  justify-self: end;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #eef5f4;
+  box-shadow: 0 22px 48px rgba(20, 58, 70, 0.12);
+  opacity: 0;
+  transform: translateY(24px) scale(0.965);
+}
+
+.s2-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.035);
+}
+
+/* Photo enters after the quote, then gently "breathes" */
+.s2.active .s2-photo-wrap {
+  animation:
+    s2PhotoIn 1.05s cubic-bezier(0.16, 0.84, 0.24, 1) 0.48s forwards,
+    s2PhotoFloat 7s ease-in-out 1.7s infinite alternate;
+}
+
+.s2.active .s2-photo {
+  animation: s2PhotoZoom 9s ease-in-out 1.7s infinite alternate;
+}
+
+.s2.active .s2-accent {
+  animation: s2AccentIn 0.8s cubic-bezier(0.16, 0.84, 0.24, 1) 0.62s both;
+}
+
+@keyframes s2PhotoIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes s2PhotoFloat {
+  from {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 22px 48px rgba(20, 58, 70, 0.1);
+  }
+  to {
+    transform: translateY(-9px) scale(1.008);
+    box-shadow: 0 30px 58px rgba(20, 58, 70, 0.15);
+  }
+}
+
+@keyframes s2PhotoZoom {
+  from {
+    transform: scale(1.035);
+  }
+  to {
+    transform: scale(1.075);
+  }
+}
+
+@keyframes s2AccentIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .s2-layout {
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 3.5%;
+  }
+
+  .s2-photo-wrap {
+    width: min(100%, 470px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s2.active .s2-photo-wrap,
+  .s2.active .s2-photo,
+  .s2.active .s2-accent {
+    animation: none !important;
+  }
+
+  .s2-photo-wrap {
+    opacity: 1;
+    transform: none;
+  }
+
+  .s2-photo {
+    transform: none;
+  }
+}
+
+/* 3. PAIN POINTS */
+.s3 .header {
+  width: 74%;
+  margin-bottom: 34px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  min-height: 185px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  background: #fff;
+  transition:
+    transform 0.34s cubic-bezier(0.16, 0.84, 0.24, 1),
+    box-shadow 0.34s ease,
+    border-color 0.34s ease,
+    background 0.34s ease;
+}
+.card:hover,
+.card.auto-highlight {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+  border-color: var(--teal);
+  background: #fbfefd;
+}
+.num {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--soft);
+  color: var(--teal);
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 18px;
+  transition: 0.25s ease;
+}
+.card:hover .num,
+.card.auto-highlight .num {
+  background: var(--lime);
+  color: var(--ink);
+  transform: scale(1.08) rotate(-5deg);
+}
+.card p {
+  font-size: clamp(22px, 1.45vw, 27px);
+  line-height: 1.23;
+  color: var(--text);
+  font-weight: 650;
+}
+
+/* 4. THREE WAYS */
+.s4 .pad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 50px;
+}
+.way {
+  padding: 34px 28px;
+  border-top: 4px solid var(--teal);
+  background: var(--soft);
+  border-radius: 0 0 18px 18px;
+}
+.way:nth-child(2) {
+  border-color: var(--mint);
+}
+.way:nth-child(3) {
+  border-color: var(--lime);
+}
+.way .big {
+  font-size: clamp(54px, 5vw, 84px);
+  line-height: 1;
+  color: #dce9e7;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+.way p {
+  font-size: clamp(26px, 1.8vw, 32px);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ink);
+}
+/* 5. ACCORDION + PHONE PREVIEW */
+.s5 .pad {
+  top: 8.8%;
+  right: 5.5%;
+  bottom: 7%;
+}
+
+.s5,
+.s5 button,
+.s5 .acc-title,
+.s5 .panel-inner,
+.s5 li {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.s5-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 62%) minmax(280px, 38%);
+  gap: 3.4%;
+  align-items: start;
+}
+
+.s5-left {
+  min-width: 0;
+  padding-right: 1%;
+}
+
+.s5-left .kicker {
+  margin-bottom: 12px;
+}
+
+.s5-left h2 {
+  /* font-size: clamp(38px, 3.3vw, 60px); */
+  line-height: 1.02;
+}
+
+.accordion {
+  margin-top: 46px;
+  border-top: 1px solid var(--line);
+  max-width: none;
+}
+
+.item {
+  border-bottom: 1px solid var(--line);
+}
+
+.acc-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 17px 0;
+  display: grid;
+  grid-template-columns: 48px 1fr 38px;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.acc-index {
+  font-size: 24px;
+  color: #91a3a8;
+  font-weight: 800;
+}
+
+.acc-title {
+  font-size: clamp(24px, 1.3vw, 26px);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.acc-icon {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #cfdcde;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--teal);
+  font-size: 20px;
+  transition:
+    transform 0.55s cubic-bezier(0.16, 0.84, 0.24, 1),
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.item.open .acc-icon {
+  transform: rotate(45deg);
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+}
+
+.item.open .acc-title {
+  color: var(--teal);
+}
+
+.panel {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    height 0.76s cubic-bezier(0.16, 0.84, 0.24, 1),
+    opacity 0.5s ease;
+}
+
+.item.open .panel {
+  opacity: 1;
+}
+
+.panel-inner {
+  padding: 0 36px 18px 58px;
+  font-size: clamp(18px, 1.03vw, 20px);
+  line-height: 1.4;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.5s ease 0.12s,
+    transform 0.62s cubic-bezier(0.16, 0.84, 0.24, 1) 0.1s;
+}
+
+.item.open .panel-inner {
+  opacity: 1;
+  transform: none;
+}
+
+.panel-inner ul {
+  margin: 8px 0 0;
+  padding-left: 1.1em;
+}
+
+/* Phone starts noticeably below the logo, so the two never collide */
+.phone-stage {
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: clamp(104px, 11vh, 142px);
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+}
+
+.s5.active .phone-stage {
+  animation: phoneIn 0.78s cubic-bezier(0.16, 0.84, 0.24, 1) 0.32s forwards;
+}
+
+@keyframes phoneIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.phone-shell {
+  position: relative;
+  width: min(100%, 380px);
+  height: clamp(760px, 79vh, 900px);
+  padding: 9px;
+  border-radius: 34px;
+  background: #173f4c;
+  box-shadow:
+    0 24px 54px rgba(20, 58, 70, 0.2),
+    0 3px 10px rgba(20, 58, 70, 0.09);
+}
+
+.phone-shell::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: 15px;
+  left: 50%;
+  width: 72px;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #173f4c;
+}
+
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #fff;
+}
+
+/* Белая безопасная зона под верхней капсулой телефона:
+         скрин начинается ниже и больше не заезжает под неё. */
+.phone-safe-zone {
+  position: relative;
+  z-index: 2;
+  height: 34px;
+  background: #fff;
+  border-bottom: 1px solid rgba(23, 77, 96, 0.05);
+}
+
+.phone-scroll-viewport {
+  position: relative;
+  height: calc(100% - 34px);
+  overflow: hidden;
+  background: #fff;
+}
+
+.phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.family-page-scroll {
+  display: block;
+  width: 118%;
+  height: auto;
+  max-width: none;
+  margin-left: -9%;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.phone-caption {
+  position: absolute;
+  right: calc(100% + 28px);
+  top: clamp(590px, 43vh, 485px);
+  width: 250px;
+  text-align: right;
+  color: #91a3a8;
+  line-height: 1.35;
+}
+
+.phone-caption-title {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #91a3a8;
+}
+
+.phone-caption-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #708288;
+  text-decoration: none;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.phone-caption-link:hover {
+  color: var(--teal);
+  transform: translateX(3px);
+}
+
+@media (max-width: 1050px) {
+  .s5-grid {
+    grid-template-columns: minmax(0, 64%) minmax(250px, 36%);
+    gap: 2.5%;
+  }
+
+  .acc-title {
+    font-size: 24px;
+  }
+
+  .panel-inner {
+    font-size: 18px;
+  }
+
+  .phone-stage {
+    padding-top: 92px;
+  }
+
+  .phone-shell {
+    width: min(100%, 330px);
+    height: clamp(680px, 78vh, 820px);
+  }
+}
+
+/* 6. PROFESSION — uses the same visual system as slide 5 */
+
+.s6-prof .pad {
+  top: 8.8%;
+  right: 5.5%;
+  bottom: 7%;
+}
+
+.s6-prof,
+.s6-prof button,
+.s6-prof .acc-title,
+.s6-prof .panel-inner,
+.s6-prof li {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+/* тот же вход телефона, что на родительском слайде */
+.s6-prof.active .phone-stage {
+  animation: phoneIn 0.78s cubic-bezier(0.16, 0.84, 0.24, 1) 0.32s forwards;
+}
+/* Профориентация: увеличиваем изображение внутри телефона */
+.s6-prof .family-page-scroll {
+  width: 150%;
+  max-width: none;
+  margin-left: -25%;
+}
+
+/* =========================================================
+   7. ПОВЫШЕНИЕ УЧЕБНОЙ МОТИВАЦИИ
+   ========================================================= */
+
+.s7-motivation .pad {
+  top: 8.8%;
+  right: 5.5%;
+  bottom: 7%;
+}
+
+/* Основная сетка */
+
+.s7-motivation-grid {
+  height: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 57%)
+    minmax(0, 43%);
+
+  gap: 46px;
+
+  align-items: start;
+}
+
+.s7-motivation-left {
+  min-width: 0;
+  padding-right: 1%;
+}
+
+.s7-motivation-left .kicker {
+  margin-bottom: 12px;
+}
+
+.s7-motivation-left h2 {
+  /* font-size: clamp(38px, 3.3vw, 60px); */
+  line-height: 1.02;
+}
+
+/* =========================================================
+   НОУТБУК
+   ========================================================= */
+
+.motivation-laptop-stage {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  padding-top: 162px;
+
+  opacity: 0;
+
+  transform: translateY(18px) scale(0.985);
+}
+
+/* мягкий вход ноутбука */
+
+.s7-motivation.active .motivation-laptop-stage {
+  animation: motivationLaptopIn 0.78s cubic-bezier(0.16, 0.84, 0.24, 1) 0.32s
+    forwards;
+}
+
+@keyframes motivationLaptopIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Общий корпус */
+
+.motivation-laptop {
+  position: relative;
+
+  width: 650px;
+  max-width: 100%;
+}
+
+/* Рамка экрана */
+
+.motivation-laptop-frame {
+  position: relative;
+
+  width: 100%;
+  height: 410px;
+
+  padding: 13px 13px 16px;
+
+  border-radius: 24px 24px 12px 12px;
+
+  background: #173f4c;
+
+  box-shadow:
+    0 28px 58px rgba(20, 58, 70, 0.18),
+    0 4px 12px rgba(20, 58, 70, 0.08);
+}
+
+/* Камера */
+
+.motivation-laptop-camera {
+  position: absolute;
+
+  left: 50%;
+  top: 6px;
+
+  width: 5px;
+  height: 5px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.42);
+
+  z-index: 4;
+}
+
+/* Экран — дети*/
+
+.motivation-laptop-screen {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  background: #fff;
+}
+
+/* Область скролла */
+
+.motivation-scroll-viewport {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* Сам скрин сайта */
+
+.motivation-page-image {
+  display: block;
+
+  /*
+    Вот здесь наш зум.
+    138% = сайт заметно крупнее
+    реального размера окна ноутбука.
+  */
+
+  width: 128%;
+  height: auto;
+
+  max-width: none;
+
+  margin-left: -15%;
+
+  transform: translateY(0);
+
+  will-change: transform;
+}
+
+/* лёгкая внутренняя рамка */
+
+.motivation-laptop-screen::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Нижняя часть ноутбука */
+
+.motivation-laptop-base {
+  position: relative;
+
+  width: 109%;
+  height: 28px;
+
+  left: -4.5%;
+
+  background: linear-gradient(#e3e8ea, #bdc8cc);
+
+  clip-path: polygon(4% 0, 96% 0, 100% 70%, 96% 100%, 4% 100%, 0 70%);
+
+  border-radius: 0 0 18px 18px;
+
+  box-shadow: 0 14px 24px rgba(20, 58, 70, 0.12);
+}
+
+.motivation-laptop-base::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  width: 96px;
+  height: 8px;
+
+  transform: translateX(-50%);
+
+  border-radius: 0 0 8px 8px;
+
+  background: #aebbc0;
+}
+
+/* =========================================================
+   ПОДПИСЬ
+   ========================================================= */
+
+.motivation-caption {
+  width: 610px;
+  max-width: 96%;
+
+  margin-top: 28px;
+
+  text-align: center;
+
+  color: #91a3a8;
+
+  line-height: 1.35;
+}
+
+.motivation-caption-title {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 14px;
+
+  font-weight: 400;
+}
+
+.motivation-caption-link {
+  display: inline-block;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #708288;
+
+  text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.motivation-caption-link:hover {
+  color: var(--teal);
+
+  transform: translateX(3px);
+}
+
+/* 8. PRIMARY PREVENTION */
+
+.s8-prevention .s5-grid {
+  grid-template-columns: 62% 38%;
+}
+
+/* акцентный вопрос */
+
+.prevention-question {
+  margin-top: 32px;
+  margin-bottom: 18px;
+
+  font-size: 28px;
+  line-height: 1.25;
+
+  color: var(--teal);
+
+  font-weight: 700;
+}
+
+/* правая часть */
+
+.prevention-umk {
+  padding-top: 150px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.umk-grid {
+  position: relative;
+  top: -70px;
+
+  width: 480px;
+  height: 560px;
+
+  margin-bottom: -80px;
+}
+
+.umk-grid img {
+  position: absolute;
+
+  width: 150px;
+  height: 210px;
+
+  object-fit: contain;
+
+  opacity: 0;
+
+  border-radius: 8px;
+
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+
+  transform: translateY(50px) scale(0.8) rotate(-8deg);
+}
+
+.umk-grid img:nth-child(1) {
+  left: 40px;
+  top: 20px;
+  rotate: -6deg;
+}
+
+.umk-grid img:nth-child(2) {
+  left: 210px;
+  top: 5px;
+  rotate: 5deg;
+}
+
+.umk-grid img:nth-child(3) {
+  left: 70px;
+  top: 150px;
+  rotate: 4deg;
+}
+
+.umk-grid img:nth-child(4) {
+  left: 235px;
+  top: 165px;
+  rotate: -7deg;
+}
+
+.umk-grid img:nth-child(5) {
+  left: 45px;
+  top: 295px;
+  rotate: -4deg;
+}
+
+.umk-grid img:nth-child(6) {
+  left: 210px;
+  top: 310px;
+  rotate: 6deg;
+}
+
+/* появление */
+
+.s8-prevention.show-umk .umk-grid img {
+  animation: umkAppear 0.8s cubic-bezier(0.16, 0.84, 0.24, 1) forwards;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(4) {
+  animation-delay: 0.65s;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+.s8-prevention.show-umk .umk-grid img:nth-child(6) {
+  animation-delay: 0.95s;
+}
+
+@keyframes umkAppear {
+  from {
+    opacity: 0;
+
+    transform: translateY(50px) scale(0.8) rotate(-10deg);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform: translateY(-5px) scale(1.04) rotate(1deg);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+
+/* подпись появляется вместе с УМК */
+
+.s8-prevention .motivation-caption {
+  opacity: 0;
+
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.s8-prevention .motivation-caption.show {
+  opacity: 1;
+
+  transform: none;
+}
+
+.s8-prevention.show-umk .motivation-caption {
+  opacity: 1;
+  transform: none;
+}
+
+/* 6. RESEARCH */
+.s6 .pad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.pipeline {
+  display: grid;
+  grid-template-columns: 1fr 90px 1fr 90px 1fr;
+  align-items: center;
+  margin-top: 56px;
+}
+.node {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  min-height: 250px;
+  background: #fff;
+}
+.node h3 {
+  margin-bottom: 16px;
+}
+.node p {
+  font-size: clamp(21px, 1.3vw, 25px);
+  line-height: 1.35;
+  color: var(--text);
+}
+.arrow {
+  font-size: 56px;
+  color: var(--teal);
+  text-align: center;
+}
+.s6.active .arrow {
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  from {
+    transform: translateX(-5px);
+    opacity: 0.45;
+  }
+  to {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+}
+.takeaway {
+  margin-top: 34px;
+  padding: 20px 24px;
+  border-left: 5px solid var(--lime);
+  background: var(--soft);
+  font-size: clamp(24px, 1.55vw, 29px);
+  line-height: 1.3;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.motion-path {
+  fill: none;
+  stroke: none;
+}
+
+/* 7. PRODUCT */
+.s7 .pad {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 6%;
+  align-items: center;
+}
+.product-title .eyebrow {
+  font-size: 20px;
+  color: var(--teal);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.product-title h2 {
+  font-size: clamp(52px, 5vw, 92px);
+}
+.product-title p {
+  margin-top: 24px;
+  font-size: clamp(25px, 1.7vw, 31px);
+  line-height: 1.3;
+  color: var(--text);
+  max-width: 850px;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+.metric {
+  padding: 24px;
+  background: var(--soft);
+  border-radius: 16px;
+}
+.metric strong {
+  display: block;
+  font-size: clamp(42px, 4vw, 72px);
+  line-height: 1;
+  color: var(--teal);
+}
+.metric span {
+  font-size: 20px;
+  color: var(--text);
+}
+.promise {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 34px;
+}
+.promise h3 {
+  margin-bottom: 22px;
+}
+.promise ul {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: clamp(22px, 1.4vw, 27px);
+  line-height: 1.45;
+  color: var(--text);
+}
+
+/* 8. CLOSE */
+.s8 .pad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.close-wrap {
+  max-width: 1150px;
+}
+.close-wrap h2 {
+  font-size: clamp(52px, 5vw, 94px);
+}
+.close-line {
+  width: 120px;
+  height: 5px;
+  background: var(--lime);
+  margin: 34px auto 0;
+}
+.close-symbol {
+  margin: 44px auto 0;
+  width: 220px;
+  height: 110px;
+  position: relative;
+}
+.close-symbol .c1,
+.close-symbol .c2 {
+  position: absolute;
+  top: 0;
+  width: 92px;
+  height: 110px;
+}
+.close-symbol .c1 {
+  left: 50px;
+  background: var(--mint);
+}
+.close-symbol .c2 {
+  left: 100px;
+  background: var(--teal);
+}
+.close-symbol .close-symbol .d {
+  position: absolute;
+  width: 38px;
+  aspect-ratio: 1;
+  background: var(--lime);
+  left: 4px;
+  top: 36px;
+  transform: rotate(45deg);
+}
+.s8.active .close-symbol {
+  animation: gentle 2.2s ease-in-out infinite alternate;
+}
+@keyframes gentle {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* === TITLE SLIDE UPDATE === */
+
+/* Main title: slow brand gradient */
+.hero-title {
+  margin-top: 160px;
+  width: max-content;
+  max-width: 100%;
+  color: transparent;
+  background: linear-gradient(
+    110deg,
+    #a7e51e 0%,
+    #7bd936 18%,
+    #55cc73 38%,
+    #35bea7 58%,
+    #159b78 78%,
+    #0b725c 100%
+  );
+  background-size: 260% 260%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.s1.active .hero-title {
+  animation:
+    rise 0.7s cubic-bezier(0.16, 0.84, 0.24, 1) 0.24s forwards,
+    heroGradientFlow 11s ease-in-out 1.05s infinite alternate;
+}
+
+@keyframes heroGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 58% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Uploaded vector instead of the constructed squares */
+.hero-vector-wrap {
+  position: absolute;
+  right: 4.5%;
+  top: 50%;
+  width: 34%;
+  height: 54%;
+  transform: translateY(-44%);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.hero-vector {
+  width: min(82%, 440px);
+  aspect-ratio: 91 / 75;
+  display: grid;
+  place-items: center;
+  transform-origin: center;
+  filter: drop-shadow(0 22px 32px rgba(25, 177, 150, 0.08));
+}
+
+.hero-vector svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Very soft, permanent breathing pulse */
+.s1.active .hero-vector {
+  animation: logoBreathe 6.8s ease-in-out infinite;
+}
+
+@keyframes logoBreathe {
+  0%,
+  100% {
+    transform: scale(0.975);
+    opacity: 0.94;
+    filter: drop-shadow(0 18px 26px rgba(25, 177, 150, 0.07));
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 1;
+    filter: drop-shadow(0 27px 40px rgba(25, 177, 150, 0.13));
+  }
+}
+
+/* Slightly rebalance title slide after removing the kicker */
+.s1 .hero-copy {
+  width: 60%;
+  transform: translateY(-1%);
+}
+
+.s1 .hero-sub {
+  margin-top: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s1.active .hero-title,
+  .s1.active .hero-vector {
+    animation: none !important;
+  }
+  .hero-title {
+    background-position: 55% 50%;
+  }
+  .hero-vector {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* === POWERPOINT STAGE MODE === */
+.viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deck {
+  width: 1600px;
+  height: 900px;
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 18px 60px rgba(20, 58, 70, 0.12);
+  transform-origin: center center;
+}
+
+.slide {
+  width: 1600px;
+  height: 900px;
+}
+
+/* avoid viewport-dependent positioning on fixed canvas */
+.phone-shell {
+  height: 760px;
+}
+
+@media (max-width: 900px) {
+  .deck {
+    width: 1600px;
+    height: 900px;
+  }
+}
+/* ===== ORBIT ===== */
+
+.s9-orbit {
+  position: absolute;
+
+  left: 50%;
+
+  top: 470px;
+
+  transform: translate(-50%, -50%);
+
+  width: 1120px;
+
+  height: 360px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(90deg, #35bea7, #67dec5, #aaf12c, #35bea7);
+
+  background-size: 300% 100%;
+
+  animation: orbitGradient 14s linear infinite;
+
+  padding: 2px;
+}
+
+.s9-orbit-inner {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+
+  background: white;
+}
+
+@keyframes orbitGradient {
+  from {
+    background-position: 0% center;
+  }
+
+  to {
+    background-position: 300% center;
+  }
+}
+
+/* ===== CENTER IMAGE ===== */
+
+.s9-center {
+  position: absolute;
+
+  left: 50%;
+
+  top: 426px;
+
+  transform: translate(-50%, -50%);
+
+  width: 170px;
+}
+
+.s9-center img {
+  width: 100%;
+
+  display: block;
+}
+
+/* ===== CENTER TEXT ===== */
+
+.center-caption {
+  position: absolute;
+
+  left: 50%;
+
+  top: 512px;
+
+  transform: translateX(-50%);
+
+  width: 220px;
+
+  text-align: center;
+
+  color: #7c8d92;
+
+  font-size: 20px;
+
+  line-height: 1.25;
+}
+
+/* ===== CARDS ===== */
+
+.s9-card {
+  position: absolute;
+
+  width: 320px;
+
+  height: 110px;
+
+  padding: 20px;
+
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 18px;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--ink);
+
+  font-size: 20px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+}
+
+/* top */
+
+.card-5 {
+  left: 548px;
+
+  top: 208px;
+}
+
+/* left */
+
+.card-2 {
+  left: 180px;
+
+  top: 370px;
+}
+
+/* right */
+
+.card-1 {
+  right: 180px;
+
+  top: 370px;
+}
+
+/* bottom left */
+
+.card-3 {
+  left: 290px;
+
+  top: 570px;
+}
+
+/* bottom right */
+
+.card-4 {
+  right: 290px;
+
+  top: 570px;
+}
+
+/* ===== FOOTER ===== */
+
+.s9-diagnostics .note {
+  position: absolute;
+
+  left: 50%;
+
+  bottom: 40px;
+
+  transform: translateX(-50%);
+
+  color: var(--teal);
+
+  font-size: 30px;
+
+  font-weight: 700;
+}
+.s9-content {
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: -30px;
+}
+.text-centered {
+  text-align: center;
+}
+/* =====================================================
+   10. ИНДЕКС РАЗВИВАЮЩЕЙ СРЕДЫ
+===================================================== */
+
+.s10-environment .header {
+  margin-bottom: 28px;
+}
+
+.s10-environment h2 {
+  max-width: 900px;
+}
+
+/* описание */
+
+.s10-intro {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 22px;
+
+  width: 86%;
+
+  margin-top: 24px;
+
+  margin-bottom: 50px;
+}
+
+.s10-line {
+  width: 5px;
+
+  min-height: 112px;
+
+  background: var(--teal);
+
+  border-radius: 10px;
+}
+
+.s10-intro p {
+  font-size: 26px;
+
+  line-height: 1.35;
+
+  color: var(--ink);
+
+  max-width: 1180px;
+}
+
+.s10-intro strong {
+  font-weight: 800;
+}
+
+/* карточки */
+
+.s10-cards {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 28px;
+
+  margin-top: 20px;
+}
+.s10-cards .card p {
+  font-weight: 400;
+}
+.s10-cards .card {
+  min-height: 360px;
+
+  padding: 30px;
+}
+
+.s10-cards .num {
+  width: 54px;
+
+  height: 54px;
+
+  background: var(--teal);
+
+  color: white;
+
+  font-size: 26px;
+}
+
+.s10-cards .card p {
+  margin-top: 10px;
+
+  font-size: 25px;
+
+  line-height: 1.28;
+}
+
+.s10-accent {
+  color: var(--teal);
+
+  font-weight: 800;
+}
+/* ===== S10 CARD ACTIVE ===== */
+
+.s10-cards .card {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.s10-cards .card.s10-active {
+  transform: translateY(-8px);
+
+  border-color: var(--teal);
+
+  box-shadow: 0 18px 40px rgba(53, 190, 167, 0.22);
+}
+
+/* =====================================================
+   11. ОБ ИССЛЕДОВАНИИ
+===================================================== */
+
+.s11-research .header {
+  margin-bottom: 35px;
+}
+
+.s11-block {
+  margin-bottom: 32px;
+}
+
+.s11-title {
+  font-size: 26px;
+  line-height: 1.2;
+
+  color: var(--teal);
+
+  font-weight: 800;
+
+  margin-bottom: 14px;
+}
+
+.s11-questions {
+  margin: 0;
+  padding-left: 30px;
+
+  max-width: 1300px;
+}
+
+.s11-questions li {
+  font-size: 25px;
+
+  line-height: 1.25;
+
+  color: var(--text);
+
+  margin-bottom: 10px;
+}
+
+/* ===== METRICS ===== */
+
+.s11-participants {
+  margin-top: 48px;
+}
+
+.s11-metrics {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 40px;
+
+  margin-top: 24px;
+}
+
+.s11-metric {
+  text-align: center;
+}
+
+.s11-metric strong {
+  display: block;
+
+  font-size: 76px;
+
+  line-height: 1;
+
+  color: #536783;
+
+  font-weight: 800;
+
+  letter-spacing: -0.04em;
+}
+
+.s11-metric span {
+  display: block;
+
+  margin-top: 12px;
+
+  font-size: 22px;
+
+  line-height: 1.25;
+
+  color: var(--text);
+}
+
+/* ===== METHODS ===== */
+
+.s11-methods {
+  margin-top: 48px;
+}
+
+.s11-method-list {
+  margin: 0;
+
+  padding-left: 30px;
+}
+
+.s11-method-list li {
+  font-size: 26px;
+
+  line-height: 1.3;
+
+  color: var(--text);
+}
+
+.results-list {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: normal;
+}
+
+/* =====================================================
+   12. РЕЗУЛЬТАТЫ ИССЛЕДОВАНИЯ
+===================================================== */
+
+/* --- верхние карточки --- */
+
+.s12-research .pipeline {
+  display: grid;
+  grid-template-columns: 1fr 90px 1fr 90px 1fr;
+  align-items: stretch;
+  margin-top: 50px;
+}
+
+.s12-research .node {
+  height: 336px;
+
+  padding: 28px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  background: #fff;
+}
+
+/* заголовки карточек */
+
+.s12-research .node h3 {
+  font-size: 32px;
+
+  line-height: 1.15;
+
+  color: var(--ink);
+
+  margin-bottom: 18px;
+}
+
+/* обычный текст первой карточки */
+
+.s12-research .node p {
+  font-size: 24px;
+
+  line-height: 1.25;
+
+  font-weight: 400;
+
+  color: var(--text);
+}
+
+/* списки внутри карточек */
+
+.s12-research .node ul {
+  margin: 0;
+
+  padding-left: 24px;
+}
+
+.s12-research .node li {
+  font-size: 22px;
+
+  line-height: 1.25;
+
+  font-weight: 400;
+
+  color: var(--text);
+
+  margin-bottom: 6px;
+}
+
+/* стрелки */
+/* стрелки */
+
+.s12-research .arrow {
+  font-size: 56px;
+
+  color: var(--teal);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  animation: s12ArrowFlow 2s ease-in-out infinite alternate;
+}
+
+/* мягкое движение вперед-назад */
+
+@keyframes s12ArrowFlow {
+  from {
+    transform: translateX(-5px);
+
+    opacity: 0.65;
+  }
+
+  to {
+    transform: translateX(5px);
+
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   Нижняя плашка
+===================================================== */
+
+.s12-research .takeaway {
+  margin-top: 94px;
+
+  padding: 32px 40px;
+
+  border-left: 5px solid var(--lime);
+
+  background: var(--soft);
+
+  color: var(--ink);
+
+  font-weight: 400;
+}
+
+/* делаем два столбца */
+
+.s12-research .takeaway ul {
+  margin: 0;
+
+  padding-left: 28px;
+
+  columns: 2;
+
+  column-gap: 70px;
+}
+
+.s12-research .takeaway li {
+  font-size: 26px;
+
+  line-height: 1.3;
+
+  font-weight: 400;
+
+  color: var(--ink);
+
+  margin-bottom: 12px;
+}
+
+/* =====================================================
+   S12 — финальная настройка
+===================================================== */
+
+/* карточки шире */
+
+.s12-research .pipeline {
+  grid-template-columns: 1.15fr 90px 1.15fr 90px 1.15fr;
+
+  margin-top: 55px;
+}
+
+/* сами карточки */
+
+.s12-research .node {
+  height: 336px;
+
+  padding: 30px;
+}
+
+/* заголовки карточек */
+
+.s12-research .node h3 {
+  font-size: 32px;
+
+  margin-bottom: 18px;
+}
+
+/* весь текст внутри карточек делаем единым */
+
+.s12-research .node p,
+.s12-research .node li {
+  font-size: 24px;
+
+  line-height: 1.25;
+
+  font-weight: 400;
+
+  color: var(--text);
+}
+
+/* списки */
+
+.s12-research .node ul {
+  margin: 0;
+
+  padding-left: 24px;
+}
+
+.s12-research .node li {
+  margin-bottom: 5px;
+}
+
+/* увеличиваем расстояние до нижней плашки */
+
+.s12-research .takeaway {
+  margin-top: 50px;
+}
+
+/* нижняя плашка */
+
+.s12-research .takeaway li {
+  font-size: 27px;
+
+  line-height: 1.35;
+
+  font-weight: 400;
+}
+
+/* =====================================================
+   S13 — ЧЕЛОВЕКОЦЕНТРИЧНЫЙ ПОДХОД
+===================================================== */
+
+.s13-human .header {
+  margin-bottom: 45px;
+}
+
+.s13-content {
+  display: grid;
+
+  grid-template-columns: 470px 1fr;
+
+  gap: 70px;
+
+  align-items: start;
+}
+
+/* левая плашка */
+
+/* карточка человекоцентричности */
+
+.s13-definition {
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  padding: 32px;
+
+  min-height: 330px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* эффект как у карточек слайда 10 */
+
+.s13-definition.s13-active {
+  transform: translateY(-8px);
+
+  border-color: var(--teal);
+
+  box-shadow: 0 20px 45px rgba(53, 190, 167, 0.22);
+}
+.s13-definition p {
+  margin: 0 0 18px;
+
+  font-size: 24px;
+
+  line-height: 1.35;
+
+  color: var(--ink);
+
+  font-weight: 400;
+}
+
+.s13-accent {
+  color: var(--ink);
+
+  font-weight: 800;
+}
+
+.s13-definition p:last-child {
+  margin-bottom: 0;
+}
+
+/* правая часть */
+
+.s13-title {
+  color: var(--teal);
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+  margin-bottom: 18px;
+}
+
+.s13-actions ol {
+  margin: 0;
+
+  padding-left: 30px;
+}
+
+.s13-actions li {
+  font-size: 26px;
+
+  line-height: 1.35;
+
+  color: var(--text);
+
+  margin-bottom: 10px;
+}
+
+.s13-final {
+  margin-top: 45px;
+
+  max-width: 760px;
+
+  font-size: 26px;
+
+  line-height: 1.3;
+
+  color: var(--text);
+}
+
+/* =====================================================
+   S14 — ППК ЧЕЛОВЕКОЦЕНТРИЧНОЕ УПРАВЛЕНИЕ
+===================================================== */
+
+.s14-ppk .header {
+  margin-bottom: 35px;
+}
+
+.s14-subtitle {
+  font-size: 30px;
+
+  color: #d7d7d7;
+
+  font-weight: 800;
+
+  margin-bottom: 20px;
+}
+
+.s14-ppk h2 span {
+  color: var(--teal);
+}
+
+/* основной блок */
+
+.s14-main {
+  display: grid;
+
+  grid-template-columns: 1.7fr 0.9fr;
+
+  gap: 45px;
+}
+
+/* карточка курса */
+
+.s14-course {
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  padding: 32px;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 40px;
+}
+
+.s14-course h3,
+.s14-learn h3,
+.s14-for h3 {
+  color: var(--ink);
+
+  font-size: 30px;
+
+  margin-bottom: 20px;
+}
+
+.s14-course p,
+.s14-course li,
+.s14-learn li {
+  font-size: 24px;
+
+  line-height: 1.3;
+
+  color: var(--text);
+}
+
+.s14-course ul,
+.s14-learn ul {
+  padding-left: 26px;
+}
+
+.s14-course li,
+.s14-learn li {
+  margin-bottom: 12px;
+}
+
+.s14-hours {
+  margin-top: 45px;
+}
+
+/* что узнаете */
+
+.s14-learn {
+  border: 3px dotted var(--teal);
+
+  border-radius: 18px;
+
+  padding: 26px;
+}
+
+.s14-learn h3 {
+  color: var(--teal);
+}
+
+.s14-bottom {
+  display: grid;
+
+  grid-template-columns: 1fr 430px;
+
+  gap: 60px;
+
+  margin-top: 55px;
+}
+
+/* Для кого */
+
+.s14-for p {
+  font-size: 27px;
+
+  line-height: 1.3;
+
+  color: var(--text);
+}
+
+/* QR */
+
+.s14-qr {
+  display: grid;
+
+  grid-template-columns: 150px 1fr;
+
+  gap: 20px;
+
+  align-items: center;
+}
+
+.s14-link {
+  grid-column: 1 / -1;
+
+  color: #1767b8;
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+  text-decoration: underline;
+}
+
+.s14-qr img {
+  width: 150px;
+}
+
+.s14-qr p {
+  font-size: 24px;
+
+  line-height: 1.3;
+
+  color: var(--teal);
+}
+/* =====================================================
+   S14 — COMPACT VERSION
+===================================================== */
+
+/* заголовок */
+
+.s14-subtitle {
+  font-size: 22px;
+
+  margin-bottom: 10px;
+}
+
+.s14-ppk .header {
+  margin-bottom: 20px;
+}
+
+.s14-ppk h2 {
+  font-size: 42px;
+}
+
+/* верхний блок */
+
+.s14-main {
+  gap: 35px;
+}
+
+/* левая карточка */
+
+.s14-course {
+  padding: 24px;
+
+  gap: 25px;
+}
+
+.s14-course h3,
+.s14-learn h3,
+.s14-for h3 {
+  font-size: 26px;
+
+  margin-bottom: 12px;
+}
+
+.s14-course p,
+.s14-course li,
+.s14-learn li {
+  font-size: 20px;
+
+  line-height: 1.25;
+}
+
+.s14-course li,
+.s14-learn li {
+  margin-bottom: 7px;
+}
+
+.s14-hours {
+  margin-top: 25px;
+}
+
+/* правая карточка */
+
+.s14-learn {
+  padding: 20px;
+}
+
+.s14-learn ul {
+  padding-left: 20px;
+}
+
+/* низ */
+
+.s14-bottom {
+  margin-top: 35px;
+
+  gap: 40px;
+}
+
+.s14-for p {
+  font-size: 23px;
+
+  line-height: 1.25;
+}
+
+/* QR */
+
+.s14-link {
+  font-size: 22px;
+}
+
+.s14-qr img {
+  width: 120px;
+}
+
+.s14-qr p {
+  font-size: 20px;
+}
+/* =====================================================
+   S15 — НАШИ ШАГИ
+===================================================== */
+
+.s15-path .header {
+  margin-bottom: 55px;
+}
+
+.s15-cards {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 70px;
+
+  align-items: stretch;
+}
+
+/* карточка */
+
+.s15-card {
+  border: 3px dotted var(--teal);
+
+  border-radius: 24px;
+
+  padding: 34px 34px 30px;
+
+  background: white;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  min-height: 500px;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* мягкий hover как у карточек */
+
+.s15-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow: 0 20px 40px rgba(53, 190, 167, 0.18);
+}
+
+/* изображения */
+
+.s15-card img {
+  width: 100%;
+
+  max-width: 330px;
+
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+
+  margin-bottom: 30px;
+}
+
+/* подпись */
+
+.s15-card p {
+  margin: 0;
+
+  font-size: 27px;
+
+  line-height: 1.25;
+
+  color: var(--ink);
+
+  font-weight: 400;
+}
+/* =====================================================
+   S15 — COMPACT VERSION
+===================================================== */
+
+.s15-path .header {
+  margin-bottom: 40px;
+}
+
+/* карточки */
+
+.s15-card {
+  padding: 26px 28px 24px;
+
+  min-height: 450px;
+}
+
+/* картинки */
+
+.s15-card img {
+  max-width: 280px;
+
+  margin-bottom: 24px;
+}
+
+/* подписи */
+
+.s15-card p {
+  font-size: 24px;
+
+  line-height: 1.25;
+}
+/* =====================================================
+   S15 — hover animation state
+===================================================== */
+
+.s15-card {
+  transform: translateY(0);
+
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.s15-card.s15-lift {
+  transform: translateY(-12px);
+
+  box-shadow: 0 22px 45px rgba(53, 190, 167, 0.18);
+}
+
+/* =====================================================
+   S16 — КОМАНДА РАЗВИТИЯ
+===================================================== */
+
+.s16-development .header {
+  margin-bottom: 25px;
+}
+
+.s16-subtitle {
+  font-size: 22px;
+
+  color: #d7d7d7;
+
+  font-weight: 800;
+
+  margin-bottom: 10px;
+}
+
+.s16-development h2 span {
+  color: var(--teal);
+}
+
+/* верхняя часть */
+
+.s16-main {
+  display: grid;
+
+  grid-template-columns: 1.7fr 0.9fr;
+
+  gap: 35px;
+}
+
+/* левая карточка */
+
+.s16-course {
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  padding: 28px;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 35px;
+}
+
+.s16-course h3,
+.s16-result h3,
+.s16-for h3,
+.s16-extra h3 {
+  font-size: 26px;
+
+  color: var(--ink);
+
+  margin-bottom: 14px;
+}
+
+.s16-course p,
+.s16-course li,
+.s16-result li {
+  font-size: 20px;
+
+  line-height: 1.25;
+
+  color: var(--text);
+}
+
+.s16-course ul,
+.s16-result ul,
+.s16-for ul {
+  padding-left: 22px;
+}
+
+.s16-course li,
+.s16-result li {
+  margin-bottom: 7px;
+}
+
+.s16-hours {
+  margin-top: 25px;
+}
+
+/* результат */
+
+.s16-result {
+  border: 3px dotted var(--teal);
+
+  border-radius: 18px;
+
+  padding: 22px;
+}
+
+.s16-result h3 {
+  color: var(--teal);
+}
+
+/* низ */
+
+.s16-bottom {
+  display: grid;
+
+  grid-template-columns: 1.5fr 0.8fr;
+
+  gap: 50px;
+
+  margin-top: 28px;
+}
+
+.s16-for p,
+.s16-for li {
+  font-size: 21px;
+
+  line-height: 1.3;
+
+  color: var(--text);
+}
+
+.s16-extra h3 {
+  color: var(--teal);
+}
+
+.s16-extra p {
+  font-size: 22px;
+
+  line-height: 1.35;
+
+  color: var(--teal);
+}
+/* =====================================================
+   S16 — COMPACT VERSION
+===================================================== */
+
+/* верх */
+
+.s16-development .header {
+  margin-bottom: 18px;
+}
+
+.s16-subtitle {
+  font-size: 20px;
+
+  margin-bottom: 8px;
+}
+
+.s16-development h2 {
+  font-size: 38px;
+
+  line-height: 1.12;
+}
+
+/* основной блок */
+
+.s16-main {
+  gap: 30px;
+}
+
+/* большая карточка */
+
+.s16-course {
+  padding: 22px;
+
+  gap: 25px;
+}
+
+.s16-course h3,
+.s16-result h3,
+.s16-for h3,
+.s16-extra h3 {
+  font-size: 24px;
+
+  margin-bottom: 10px;
+}
+
+.s16-course p,
+.s16-course li,
+.s16-result li {
+  font-size: 18px;
+
+  line-height: 1.2;
+}
+
+.s16-course li,
+.s16-result li {
+  margin-bottom: 5px;
+}
+
+.s16-hours {
+  margin-top: 18px;
+}
+
+/* правая карточка */
+
+.s16-result {
+  padding: 18px;
+}
+
+/* нижний блок */
+
+.s16-bottom {
+  margin-top: 22px;
+
+  gap: 35px;
+}
+
+.s16-for p,
+.s16-for li {
+  font-size: 19px;
+
+  line-height: 1.2;
+}
+
+.s16-extra p {
+  font-size: 20px;
+
+  line-height: 1.25;
+}
+
+/* =====================================================
+   S17 — РЕШЕНИЯ РЕГИОНОВ
+===================================================== */
+
+.s17-regions .header {
+  margin-bottom: 0;
+}
+
+/* вся линия */
+
+.s17-pipeline {
+  display: grid;
+
+  grid-template-columns: 1fr 70px 1fr 70px 1fr;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 130px;
+}
+
+/* карточки */
+
+.s17-card {
+  width: 100%;
+  height: 300px;
+
+  padding: 34px;
+
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+}
+
+/* заголовок */
+
+/* заголовок карточки */
+
+.s17-card h3 {
+  margin: 0;
+
+  height: 115px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  font-size: 24px;
+
+  line-height: 1.18;
+
+  font-weight: 800;
+
+  color: var(--ink);
+}
+
+/* основной текст */
+
+.s17-card p {
+  margin: 0;
+  padding-top: 20px;
+
+  font-size: 20px;
+
+  line-height: 1.35;
+
+  color: var(--text);
+
+  font-weight: 400;
+}
+
+/* стрелки */
+
+.s17-arrow {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  color: var(--teal);
+
+  font-size: 46px;
+
+  font-weight: 300;
+
+  animation: s17ArrowMove 2s ease-in-out infinite alternate;
+}
+
+@keyframes s17ArrowMove {
+  from {
+    transform: translateX(-4px);
+
+    opacity: 0.65;
+  }
+
+  to {
+    transform: translateX(4px);
+
+    opacity: 1;
+  }
+}
+/* =====================================================
+
+   S18 — ППК ЧЦУ → ППК КОМАНДЫ РАЗВИТИЯ
+
+===================================================== */
+
+.s18-schools .header {
+  margin-bottom: 90px;
+}
+
+/* основной контейнер */
+
+.s18-content {
+  display: grid;
+
+  grid-template-columns: 1fr 480px;
+
+  gap: 80px;
+
+  align-items: start;
+
+  max-width: none;
+}
+
+/* левая часть */
+
+.s18-text {
+  max-width: 750px;
+}
+
+/* вводный текст */
+
+.s18-lead {
+  font-size: 26px;
+
+  line-height: 1.35;
+
+  color: var(--text);
+
+  margin-bottom: 35px;
+}
+
+/* акцент в заголовке */
+
+.s18-accent {
+  color: var(--teal);
+
+  font-weight: 800;
+}
+
+.s18-accent-2 {
+  color: var(--ink);
+
+  font-weight: 800;
+}
+
+/* список */
+
+.s18-list {
+  border-left: 5px solid var(--teal);
+
+  padding-left: 32px;
+}
+
+.s18-list ul {
+  margin: 0;
+
+  padding-left: 25px;
+}
+
+.s18-list li {
+  font-size: 26px;
+
+  line-height: 1.35;
+
+  color: var(--text);
+
+  font-weight: 400;
+
+  margin-bottom: 8px;
+}
+
+/* картинка справа */
+
+.s18-image {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.s18-image img {
+  width: 390px;
+
+  height: 390px;
+
+  object-fit: contain;
+}
+.s18-content {
+  grid-template-columns: 1fr 520px;
+
+  gap: 60px;
+}
+.s18-image img {
+  width: 460px;
+
+  height: 460px;
+}
+.s18-schools h2 {
+  line-height: 1.25;
+}
+
+.s18-image img {
+  transform: translateX(-30px);
+}
+
+/* =====================================================
+   S19 — ТОЧКА ОПОРЫ
+===================================================== */
+
+.s19-point .header {
+  margin-bottom: 35px;
+}
+
+.s19-intro {
+  max-width: 1100px;
+  font-size: 24px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.s19-intro span {
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.s19-intro p {
+  margin-top: 15px;
+}
+
+.s19-accordion {
+  margin-top: 35px;
+  max-width: 1000px;
+}
+
+.s19-item {
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0;
+}
+
+.s19-title {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+
+  cursor: pointer;
+}
+
+.s19-title span {
+  font-size: 24px;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.s19-item.active .s19-body {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 15px;
+}
+
+.s19-body ul {
+  margin: 0;
+  padding-left: 25px;
+}
+
+.s19-body li {
+  margin-bottom: 8px;
+}
+/* ===== S19 compact ===== */
+
+.s19-point .header {
+  margin-bottom: 25px;
+}
+
+.s19-intro {
+  max-width: 950px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.s19-intro p {
+  margin-top: 10px;
+}
+
+.s19-accordion {
+  margin-top: 25px;
+  max-width: 1050px;
+}
+
+.s19-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.s19-title {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+/* активный пункт */
+
+.s19-item.open .s19-title {
+  color: var(--teal);
+}
+
+.s19-title span {
+  color: #9aa7ab;
+}
+
+/* спокойное состояние */
+
+.s19-item .s19-title {
+  color: var(--ink);
+  transition: 0.35s ease;
+}
+
+/* раскрытие */
+.s19-body {
+  max-height: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  transform: translateY(-8px);
+
+  transition:
+    max-height 0.7s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+
+  font-size: 18px;
+
+  line-height: 1.35;
+
+  padding-left: 65px;
+}
+
+.s19-item.open .s19-body {
+  max-height: 250px;
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+  margin-top: 15px;
+}
+/* =====================================================
+   S19 ACCORDION BUTTON
+===================================================== */
+
+.s19-toggle {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--line);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--teal);
+
+  font-size: 26px;
+  font-weight: 300;
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+
+  flex-shrink: 0;
+}
+
+/* закрыто */
+
+.s19-toggle::before {
+  content: "+";
+}
+
+/* открыто */
+
+.s19-item.open .s19-toggle {
+  background: var(--teal);
+
+  color: white;
+
+  border-color: var(--teal);
+
+  transform: rotate(180deg);
+}
+
+.s19-item.open .s19-toggle::before {
+  content: "×";
+}
+.s19-item .s19-body {
+  overflow: hidden;
+
+  transition:
+    max-height 0.6s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.s19-item:not(.open) .s19-body {
+  max-height: 0;
+
+  opacity: 0;
+
+  transform: translateY(-10px);
+}
+
+.s19-item.open .s19-body {
+  max-height: 300px;
+
+  opacity: 1;
+
+  transform: translateY(0);
+}
+/* кнопка справа в аккордеоне */
+
+.s19-title {
+  justify-content: space-between;
+}
+
+.s19-title span {
+  flex-shrink: 0;
+}
+
+/* текст между номером и кнопкой */
+.s19-title {
+  gap: 25px;
+}
+
+.s19-toggle {
+  margin-left: auto;
+}
+.s19-body p + ul {
+  margin-top: 10px;
+}
+/* =====================================================
+   S21 — ФИНАЛ
+===================================================== */
+
+.s21-final .header {
+  margin-bottom: 30px;
+}
+
+.s21-final .kicker {
+  color: #b7bfc2;
+}
+
+/* фото */
+
+.final-photo {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  margin-top: 20px;
+}
+
+.final-photo img {
+  width: 330px;
+
+  height: 330px;
+
+  object-fit: cover;
+
+  border-radius: 22px;
+
+  box-shadow: 0 25px 55px rgba(20, 58, 70, 0.18);
+
+  animation: finalFloat 5s ease-in-out infinite;
+}
+
+/* лёгкое дыхание */
+
+@keyframes finalFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+.final-photo img {
+  animation: finalFloat 5s ease-in-out infinite;
+}
+/* =====================================================
+   S21 — финальная настройка
+===================================================== */
+
+/* опускаем только этот заголовок */
+
+.s21-final .header {
+  margin-top: 70px;
+}
+
+/* увеличиваем только это фото */
+
+.s21-final .final-photo img {
+  width: 500px;
+
+  height: 500px;
+}
+/* =====================================================
+   S1 — TITLE FIX
+   крупный заголовок в одну строку
+===================================================== */
+
+.s1 .hero-copy {
+  width: 100%;
+  max-width: none;
+}
+
+.s1 .hero-title {
+  white-space: nowrap;
+}
+
+.s1 h1 {
+  font-size: clamp(74px, 8vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+/* =====================================================
+   S1 — logo left
+===================================================== */
+
+.s1-logo {
+  left: 70px;
+  right: auto;
+}
+/* =====================================================
+   S1 — title position
+===================================================== */
+
+.s1 .hero-copy {
+  transform: translateY(-50px);
+}
+
+/* S1 — speaker position */
+
+/* S1 — speaker position */
+
+/* S1 — move speaker block down */
+
+.s1 .hero-meta {
+  position: relative;
+  top: 125px;
+}
+
+/* =====================================================
+   S22 — ПОВЫШЕНИЕ МОТИВАЦИИ И ВОВЛЕЧЕННОСТИ ПЕДАГОГОВ
+===================================================== */
+
+.s22-teachers .s7-motivation-grid {
+  grid-template-columns:
+    minmax(0, 57%)
+    minmax(0, 43%);
+}
+
+/* заголовок */
+
+.s22-teachers h2 {
+  max-width: 760px;
+}
+
+/* ноутбук */
+
+.s22-teachers .motivation-laptop-stage {
+  opacity: 0;
+
+  transform: translateY(18px) scale(0.985);
+}
+
+/* возвращаем анимацию как у s7 */
+
+.s22-teachers.active .motivation-laptop-stage {
+  animation: motivationLaptopIn 0.78s cubic-bezier(0.16, 0.84, 0.24, 1) 0.32s
+    forwards;
+}
+
+/* картинка ВК */
+
+.s22-teachers .motivation-page-image {
+  width: 128%;
+
+  max-width: none;
+
+  margin-left: -15%;
+}
+
+/* подпись */
+
+.s22-teachers .motivation-caption {
+  margin-top: 26px;
+}
+.s12-research .node {
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  box-shadow: 0 16px 34px rgba(20, 58, 70, 0.11);
+
+  overflow: hidden;
+}
+.just-pad {
+  padding-top: 20px;
+}
+
+.s18-list {
+  margin-top: -20px;
+}
+/* =====================================================
+   S18 — фирменная анимированная линия списка
+===================================================== */
+
+.s18-list {
+  position: relative;
+  padding-left: 28px;
+}
+
+/* убираем старую линию, если она была через border */
+.s18-list {
+  border-left: none;
+}
+
+/* новая линия */
+
+.s18-list::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  width: 3px;
+
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    180deg,
+    #a7e51e 0%,
+    #7bd936 18%,
+    #55cc73 38%,
+    #35bea7 58%,
+    #159b78 78%,
+    #0b725c 100%
+  );
+
+  background-size: 100% 220%;
+
+  animation:
+    s18LineFloat 8s ease-in-out infinite,
+    s18LineGradient 7s ease-in-out infinite;
+}
+
+/* очень лёгкое движение линии */
+
+@keyframes s18LineFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* переливание градиента */
+
+@keyframes s18LineGradient {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 0% 100%;
+  }
+}
+/* =====================================================
+   S23 FUND
+===================================================== */
+
+.s23-fund {
+  position: relative;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* =========================
+   PHOTO 75%
+========================= */
+
+.s23-photo {
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 675px;
+
+  overflow: hidden;
+}
+
+.s23-photo img {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+}
+
+/* =========================
+   WHITE FOOTER 25%
+========================= */
+
+.s23-bottom {
+  position: absolute;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 225px;
+
+  background: #fff;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.s23-logo-bottom {
+  position: absolute;
+
+  left: 70px;
+
+  bottom: 80px;
+
+  width: 270px;
+
+  height: auto;
+}
+
+/* =========================
+   VECTOR
+========================= */
+
+.s23-vector {
+  position: absolute;
+
+  right: 40px;
+
+  bottom: -270px;
+
+  width: 520px;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.s23-vector svg {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+}
+
+/* =========================
+   VECTOR BREATHING
+========================= */
+
+.s23-fund.active .s23-vector {
+  animation: s23VectorBreathe 6.8s ease-in-out infinite;
+}
+
+@keyframes s23VectorBreathe {
+  0%,
+  100% {
+    transform: scale(0.975);
+
+    opacity: 0.94;
+
+    filter: drop-shadow(0 18px 26px rgba(25, 177, 150, 0.07));
+  }
+
+  50% {
+    transform: scale(1.025);
+
+    opacity: 1;
+
+    filter: drop-shadow(0 27px 40px rgba(25, 177, 150, 0.13));
+  }
+} /* =====================================================
+   S24 FUND CHILD
+===================================================== */
+
+.s24-fund-child {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* цветок за карточкой */
+
+.s24-flower {
+  position: absolute;
+  z-index: 1;
+  width: 2390px;
+  right: -1339px;
+  bottom: -641px;
+  transform: rotate(-5deg);
+}
+
+/* фото справа */
+
+.s24-photo {
+  position: absolute;
+
+  z-index: 2;
+
+  left: -60px;
+
+  top: 0;
+
+  width: 52%;
+
+  height: 100%;
+}
+
+.s24-photo img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* карточка */
+
+.s24-card {
+  position: absolute;
+  z-index: 4;
+  left: 812px;
+  top: 138px;
+  width: 700px;
+  height: 622px;
+  background: #fff;
+  border-radius: 48px;
+  box-shadow: 0 25px 60px rgba(28, 79, 95, 0.16);
+}
+
+/* логотип внутри */
+
+.s24-card-logo {
+  position: absolute;
+  left: -8px;
+  top: 14px;
+  width: 700px;
+}
+
+/* маленький текст */
+
+.s24-subtitle {
+  position: absolute;
+  left: 178px;
+  top: 162px;
+  font-size: 28px;
+  line-height: 1.15;
+  color: #35bea7;
+}
+
+/* главный текст */
+
+.s24-title {
+  position: absolute;
+
+  left: 60px;
+
+  top: 315px;
+
+  margin: 0;
+
+  font-size: 32px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+
+  background: linear-gradient(
+    90deg,
+    #006b62 0%,
+    #35bea7 45%,
+    #67dec5 70%,
+    #b2eb38 90%,
+    #35bea7 100%
+  );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  animation: s24Gradient 14s ease-in-out infinite;
+}
+
+@keyframes s24Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* =====================================================
+   S25 MISSION
+===================================================== */
+
+.s25-mission {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* =====================
+   DECOR TOP
+===================== */
+
+.s25-top-shape {
+  position: absolute;
+
+  z-index: 0;
+
+  width: 650px;
+
+  top: -360px;
+
+  right: 230px;
+
+  transform: rotate(180deg);
+
+  opacity: 0.9;
+}
+
+/* =====================
+   LEFT CARD
+===================== */
+
+.s25-card {
+  position: absolute;
+  z-index: 3;
+  left: 90px;
+  top: 73px;
+  width: 494px;
+  height: 716px;
+  background: #fff;
+  border-radius: 42px;
+  box-shadow: 0 25px 65px rgba(28, 79, 95, 0.15);
+  padding: 45px 40px;
+  box-sizing: border-box;
+}
+
+/* title */
+.s25-title {
+  margin: 0;
+
+  font-size: 54px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  background: linear-gradient(
+    90deg,
+    #006b62 0%,
+    #35bea7 45%,
+    #67dec5 75%,
+    #35bea7 100%
+  );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
+
+  animation: s25Gradient 12s ease-in-out infinite;
+}
+
+@keyframes s25Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* text */
+
+.s25-text {
+  margin-top: 70px;
+
+  font-size: 25px;
+
+  line-height: 1.35;
+
+  color: #1c4f5f;
+
+  letter-spacing: 0.01em;
+}
+
+/* =====================
+   PHOTO GRID
+===================== */
+
+.s25-gallery {
+  position: absolute;
+  z-index: 5;
+  left: 708px;
+  top: 80px;
+  width: 820px;
+  height: 660px;
+  display: grid;
+  grid-template-columns: 1.45fr 0.95fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+}
+
+.s25-img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.s25-img-1 {
+  grid-column: 1;
+
+  grid-row: 1;
+}
+
+.s25-img-2 {
+  grid-column: 2;
+
+  grid-row: 1;
+}
+
+.s25-img-3 {
+  grid-column: 1;
+
+  grid-row: 2;
+}
+
+.s25-img-4 {
+  grid-column: 2;
+
+  grid-row: 2;
+}
+
+/* =====================
+   BOTTOM DECOR
+===================== */
+
+.s25-bottom-shape {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 750px;
+
+  left: 230px;
+
+  bottom: -500px;
+
+  opacity: 0.8;
+}
+
+/* =====================
+   LOGO
+===================== */
+
+.s25-logo {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 35px;
+
+  bottom: 52px;
+
+  width: 165px;
+}
+/* =====================
+   DECOR IMAGES BEHIND PHOTO GRID
+===================== */
+
+.s25-decor-top {
+  position: absolute;
+  z-index: 1;
+  width: 687px;
+  right: 30px;
+  top: -520px;
+  transform: rotate(-5deg);
+}
+
+.s25-decor-bottom {
+  position: absolute;
+  z-index: 4;
+  width: 970px;
+  left: 290px;
+  bottom: -394px;
+}
+/* =====================================================
+   S26 SUPPORT
+===================================================== */
+
+.s26-support {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* =====================================================
+   DECOR LAYERS
+===================================================== */
+
+/* дальний серый декор */
+
+.s26-decor-grey {
+  position: absolute;
+  z-index: 1;
+  width: 1100px;
+  right: -420px;
+  bottom: 365px;
+}
+
+/* огромная форма слева */
+
+.s26-decor-big {
+  position: absolute;
+  z-index: 2;
+  width: 2649px;
+  left: -871px;
+  top: -890px;
+}
+
+/* =====================================================
+   PHOTO
+===================================================== */
+.s26-photo {
+  position: absolute;
+
+  z-index: 4;
+
+  right: 40px;
+
+  top: 99px;
+
+  width: 650px;
+}
+
+.s26-photo img {
+  width: 100%;
+
+  height: auto;
+
+  display: block;
+}
+
+/* зелёная форма поверх фото */
+
+.s26-decor-green {
+  position: absolute;
+  z-index: 5;
+  width: 780px;
+  right: -280px;
+  top: 544px;
+}
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.s26-title {
+  position: absolute;
+  z-index: 10;
+  left: 100px;
+  top: 47px;
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.s26-cards {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 100px;
+
+  top: 184px;
+
+  width: 680px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.s26-card {
+  background: #fff;
+
+  border-radius: 28px;
+
+  padding: 18px 45px;
+
+  min-height: 105px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 20px 55px rgba(28, 79, 95, 0.15);
+}
+
+/* заголовки карточек */
+
+.s26-card h3 {
+  margin: 0 0 8px;
+
+  font-size: 30px;
+
+  line-height: 1.1;
+
+  font-weight: 700;
+
+  background: linear-gradient(90deg, #006b62 0%, #35bea7 70%, #67dec5 100%);
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
+}
+
+/* описание */
+
+.s26-card p {
+  margin: 0;
+
+  font-size: 22px;
+
+  line-height: 1.25;
+
+  color: #1c4f5f;
+}
+
+/* =====================================================
+   S27 DIRECTIONS
+===================================================== */
+
+.s27-directions {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* =====================
+   DECORS
+===================== */
+
+/* серый фон */
+
+.s27-decor-grey {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 1100px;
+
+  right: -420px;
+
+  bottom: -250px;
+}
+
+/* огромная форма слева */
+
+.s27-decor-big {
+  position: absolute;
+
+  z-index: 2;
+
+  width: 2649px;
+
+  left: -871px;
+
+  top: -890px;
+}
+
+/* =====================
+   SIDE TITLE
+===================== */
+
+.s27-side-title {
+  position: absolute;
+
+  z-index: 8;
+
+  left: 35px;
+
+  top: 45px;
+
+  width: 100px;
+
+  height: 810px;
+
+  border-radius: 50px;
+
+  background: #fff;
+
+  box-shadow: 0 20px 50px rgba(28, 79, 95, 0.15);
+
+  writing-mode: vertical-rl;
+
+  transform: rotate(180deg);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 34px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  color: #35bea7;
+}
+.s27-cards {
+  position: absolute;
+  z-index: 10;
+
+  left: 160px;
+  top: 35px;
+
+  width: 1340px;
+
+  display: flex;
+  gap: 22px;
+}
+
+.s27-column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.s27-column.left {
+  width: 50%;
+}
+
+.s27-column.right {
+  width: 50%;
+}
+
+.s27-card {
+  background: #fff;
+
+  border-radius: 28px;
+
+  box-shadow: 0 18px 45px rgba(28, 79, 95, 0.15);
+
+  padding: 22px 24px;
+
+  box-sizing: border-box;
+}
+
+.s27-card h3 {
+  margin: 0 0 10px;
+
+  font-size: 30px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  background: linear-gradient(90deg, #006b62, #35bea7, #67dec5);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.s27-card p {
+  margin: 0;
+
+  font-size: 22px;
+
+  line-height: 1.3;
+
+  color: #1c4f5f;
+}
+/* =====================================================
+   S28 FUND RESULT
+===================================================== */
+
+.s28-fund-result {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+/* =====================
+ DECOR
+===================== */
+
+.s28-decor-left {
+  position: absolute;
+  z-index: 15;
+  width: 220px;
+  left: -27px;
+  top: 227px;
+}
+
+.s28-decor-right {
+  position: absolute;
+  z-index: 15;
+  width: 220px;
+  right: -19px;
+  top: 214px;
+}
+
+.s28-decor-bottom {
+  position: absolute;
+  z-index: 5;
+  width: 251px;
+  left: 455px;
+  bottom: 117px;
+}
+
+/* QR */
+
+.s28-qr {
+  position: absolute;
+
+  z-index: 20;
+
+  right: 70px;
+
+  top: 45px;
+
+  width: 95px;
+}
+
+/* TITLE */
+
+.s28-title {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 75px;
+
+  top: 55px;
+
+  margin: 0;
+
+  font-size: 48px;
+
+  font-weight: 700;
+
+  color: #1c4f5f;
+}
+
+.s28-subtitle {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 75px;
+
+  top: 112px;
+
+  font-size: 42px;
+
+  color: #35bea7;
+}
+
+/* =====================
+ CARDS
+===================== */
+
+.s28-cards {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 60px;
+
+  right: 60px;
+
+  top: 190px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px 20px;
+}
+
+.s28-card {
+  height: 145px;
+
+  background: #fff;
+
+  border-radius: 28px;
+
+  box-shadow: 0 18px 45px rgba(28, 79, 95, 0.15);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.s28-card h3 {
+  margin: 0 0 10px;
+
+  font-size: 30px;
+
+  line-height: 1.1;
+
+  font-weight: 700;
+
+  color: #35bea7;
+}
+
+.s28-card p {
+  margin: 0;
+
+  font-size: 20px;
+
+  line-height: 1.25;
+
+  color: #1c4f5f;
+}
+
+/* =====================
+ PEOPLE
+===================== */
+
+.s28-people {
+  position: absolute;
+
+  z-index: 6;
+
+  width: 690px;
+
+  left: 455px;
+
+  bottom: -45px;
+}
+
+/* =====================
+ STATISTICS
+===================== */
+
+.s28-stat {
+  position: absolute;
+
+  z-index: 12;
+
+  width: 330px;
+
+  bottom: 45px;
+}
+
+.s28-left {
+  left: 75px;
+}
+
+.s28-right {
+  right: 75px;
+}
+.s28-number {
+  font-size: 50px;
+  line-height: 1;
+  font-weight: 700;
+
+  background: linear-gradient(90deg, #006b62 0%, #35bea7 55%, #67dec5 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+  margin-bottom: 6px;
+}
+
+.s28-stat p {
+  margin: 0 0 30px;
+
+  font-size: 18px;
+
+  line-height: 1.3;
+
+  color: #1c4f5f;
+}
+.s28-card-president h3 {
+  margin-top: 8px;
+}
+
+*/ .s27-card:last-child {
+  grid-column: 2;
+}
