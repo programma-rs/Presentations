@@ -1100,7 +1100,113 @@ addEventListener("keydown", (e) => {
     goBackward();
   }
 });
+/* =========================================================
+   UNIVERSAL PRESENTATION NAVIGATION
+   mouse + touch + trackpad
+   ========================================================= */
 
+function isInteractiveTarget(target) {
+  return Boolean(
+    target.closest(
+      "a, button, input, textarea, select, " +
+        "[data-accordion], .s19-item, " +
+        ".phone-stage, .motivation-laptop-stage",
+    ),
+  );
+}
+
+/* ---------- CLICK / TAP ---------- */
+
+deck.addEventListener("click", (e) => {
+  if (isInteractiveTarget(e.target)) return;
+
+  const rect = deck.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+
+  // левая треть — назад
+  if (x < rect.width * 0.33) {
+    goBackward();
+    return;
+  }
+
+  // правая треть — вперёд
+  if (x > rect.width * 0.67) {
+    goForward();
+  }
+});
+
+/* ---------- TOUCH SWIPE ---------- */
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+deck.addEventListener(
+  "touchstart",
+  (e) => {
+    if (e.touches.length !== 1) return;
+
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  },
+  { passive: true },
+);
+
+deck.addEventListener(
+  "touchend",
+  (e) => {
+    if (isInteractiveTarget(e.target)) return;
+    if (!e.changedTouches.length) return;
+
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+
+    // слишком короткое движение — это обычный тап
+    if (Math.abs(dx) < 50) return;
+
+    // вертикальное движение не считаем перелистыванием
+    if (Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+
+    if (dx < 0) {
+      goForward();
+    } else {
+      goBackward();
+    }
+  },
+  { passive: true },
+);
+
+/* ---------- TRACKPAD HORIZONTAL SWIPE ---------- */
+
+let wheelLocked = false;
+
+deck.addEventListener(
+  "wheel",
+  (e) => {
+    if (isInteractiveTarget(e.target)) return;
+
+    // реагируем только на явно горизонтальный жест
+    if (Math.abs(e.deltaX) < 25) return;
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+
+    e.preventDefault();
+
+    if (wheelLocked) return;
+
+    wheelLocked = true;
+
+    if (e.deltaX > 0) {
+      goForward();
+    } else {
+      goBackward();
+    }
+
+    // один физический свайп = один шаг презентации
+    setTimeout(() => {
+      wheelLocked = false;
+    }, 650);
+  },
+  { passive: false },
+);
 document.getElementById("fs").addEventListener("click", async () => {
   try {
     if (!document.fullscreenElement) {
