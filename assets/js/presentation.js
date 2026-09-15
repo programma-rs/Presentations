@@ -11,6 +11,28 @@ window.addEventListener("resize", resizeDeck);
 
 const slides = [...document.querySelectorAll(".slide")];
 
+// === Controlled image preloading ===
+
+function loadSlideImages(slide) {
+  if (!slide) return;
+
+  slide.querySelectorAll("img[data-src]").forEach((img) => {
+    img.src = img.dataset.src;
+    img.removeAttribute("data-src");
+  });
+}
+
+function preloadNearbySlides(index) {
+  // текущий слайд + два следующих
+  for (let offset = 0; offset <= 2; offset++) {
+    const slideIndex = index + offset;
+
+    if (slideIndex < slides.length) {
+      loadSlideImages(slides[slideIndex]);
+    }
+  }
+}
+
 const progress = document.getElementById("navProgress");
 
 const counter = document.getElementById("counter");
@@ -862,6 +884,8 @@ function initSlide15() {
 function show(i) {
   const previous = current;
   current = (i + slides.length) % slides.length;
+
+  preloadNearbySlides(current);
 
   slides.forEach((slide, index) => {
     slide.classList.toggle("active", index === current);
