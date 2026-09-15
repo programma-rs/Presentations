@@ -52,6 +52,7 @@ function updateProgress() {
 
 // ---------- Slide 3: automatic card highlights ----------
 let cardHighlightTimers = [];
+let cardHighlightsPlayed = false;
 
 function clearCardHighlights() {
   cardHighlightTimers.forEach((timer) => clearTimeout(timer));
@@ -870,7 +871,8 @@ function show(i) {
   resetAnimations(slides[current]);
   clearCardHighlights();
 
-  if (slides[current].classList.contains("s3")) {
+  if (slides[current].classList.contains("s3") && !cardHighlightsPlayed) {
+    cardHighlightsPlayed = true;
     runCardHighlights(slides[current]);
   }
 
