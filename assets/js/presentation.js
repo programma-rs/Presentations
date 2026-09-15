@@ -1086,6 +1086,86 @@ function goBackward() {
   show(current - 1);
 }
 
+/* =========================================================
+   DIRECT SLIDE NAVIGATION
+   ========================================================= */
+
+function goToSlide(selector) {
+  const index = slides.findIndex((slide) => slide.matches(selector));
+
+  if (index !== -1) {
+    show(index);
+  }
+}
+
+document.querySelectorAll(".s3 [data-go-slide]").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const target = button.getAttribute("data-go-slide");
+
+    if (!target) return;
+
+    const targetSlide = document.querySelector(target);
+
+    if (!targetSlide) {
+      console.warn("Не найден целевой слайд:", target);
+      return;
+    }
+
+    const targetIndex = slides.indexOf(targetSlide);
+
+    if (targetIndex !== -1) {
+      show(targetIndex);
+    }
+  });
+});
+
+/* =========================================================
+   RETURN TO REQUESTS
+   ========================================================= */
+
+const requestSlides = [
+  ".s5",
+  ".s6-prof",
+  ".s7-motivation",
+  ".s22-teachers",
+  ".s8-prevention",
+  ".s9-diagnostics",
+];
+
+requestSlides.forEach((selector) => {
+  const slide = document.querySelector(selector);
+
+  if (!slide) return;
+
+  const backButton = document.createElement("button");
+
+  backButton.type = "button";
+  backButton.className = "back-to-requests";
+  backButton.textContent = "← К запросам";
+
+  backButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const requestsSlide = document.querySelector(".s3");
+
+    if (!requestsSlide) return;
+
+    const requestsIndex = slides.indexOf(requestsSlide);
+
+    if (requestsIndex !== -1) {
+      show(requestsIndex);
+    }
+  });
+
+  slide.appendChild(backButton);
+});
+
 show(0);
 
 addEventListener("keydown", (e) => {
