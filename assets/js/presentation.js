@@ -660,107 +660,82 @@ function startMotivationScroll() {
   }
 }
 
-// function initSlide9() {
-//   const slide = document.querySelector(".s9-diagnostics");
-
-//   if (!slide) return;
-
-//   // появление центральной картинки
-
-//   gsap.from(slide.querySelector(".s9-center"), {
-//     opacity: 0,ы
-
-//     scale: 0.7,
-
-//     duration: 1,
-
-//     ease: "back.out(1.5)",
-//   });
-
-//   // появление карточек
-
-//   gsap.from(slide.querySelectorAll(".s9-card"), {
-//     opacity: 0,
-
-//     y: 30,
-
-//     scale: 0.95,
-
-//     duration: 1,
-
-//     stagger: 0.45,
-
-//     ease: "power2.out",
-//   });
-// }
-
 function initSlide9() {
   const slide = document.querySelector(".s9-diagnostics");
 
   if (!slide) return;
 
-  gsap.killTweensOf(slide.querySelectorAll("*"));
+  const center = slide.querySelector(".s9-center");
+  const caption = slide.querySelector(".center-caption");
 
-  // Центр появляется первым
-
-  gsap.from(slide.querySelector(".s9-center"), {
-    opacity: 0,
-
-    scale: 0.7,
-
-    duration: 1,
-
-    ease: "back.out(1.5)",
-  });
-
-  // Подпись центра появляется чуть позже
-
-  gsap.from(slide.querySelector(".center-caption"), {
-    opacity: 0,
-
-    y: 15,
-
-    duration: 0.8,
-
-    delay: 0.5,
-
-    ease: "power2.out",
-  });
-
-  // Порядок появления карточек по кругу:
-  // 1. сверху — педагоги
-  // 2. справа — родители
-  // 3. снизу справа — профилактика
-  // 4. снизу слева — учебная мотивация
-  // 5. слева — профориентация
-
+  // Порядок появления карточек по кругу
   const cards = [
-    slide.querySelector(".card-5"),
+    slide.querySelector(".card-5"), // педагоги
+    slide.querySelector(".card-1"), // родители
+    slide.querySelector(".card-4"), // профилактика
+    slide.querySelector(".card-3"), // учебная мотивация
+    slide.querySelector(".card-2"), // профориентация
+  ].filter(Boolean);
 
-    slide.querySelector(".card-1"),
+  // Убираем незавершённую анимацию от прошлого показа
+  gsap.killTweensOf([center, caption, ...cards]);
 
-    slide.querySelector(".card-4"),
-
-    slide.querySelector(".card-3"),
-
-    slide.querySelector(".card-2"),
-  ];
-
-  gsap.from(cards, {
+  // Стартовое состояние
+  gsap.set(center, {
     opacity: 0,
-
-    y: 30,
-
-    scale: 0.95,
-
-    duration: 1,
-
-    stagger: 0.45,
-
-    delay: 0.8,
-
-    ease: "power2.out",
+    scale: 0.88,
   });
+
+  gsap.set(caption, {
+    opacity: 0,
+    y: 12,
+  });
+
+  gsap.set(cards, {
+    opacity: 0,
+    y: 22,
+    scale: 0.96,
+  });
+
+  // Последовательность появления
+  const tl = gsap.timeline({
+    defaults: {
+      ease: "power2.out",
+    },
+  });
+
+  // Школа появляется почти сразу
+  tl.to({}, { duration: 0.15 })
+
+    .to(center, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.4,
+    })
+
+    // Текст появляется почти одновременно со школой
+    .to(
+      caption,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.35,
+      },
+      "-=0.28",
+    )
+
+    // Плашки спокойно появляются по очереди
+    .to(
+      cards,
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.65,
+        stagger: 0.5,
+      },
+      "+=0.15",
+    );
 }
 
 function initSlide10() {
